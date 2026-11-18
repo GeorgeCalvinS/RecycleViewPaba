@@ -11,6 +11,16 @@ import com.example.recycleviewpaba.databinding.ItemRecyclerBinding
 class adapterRecView(private val listWayang: ArrayList<dcWayang>) :
     RecyclerView.Adapter<adapterRecView.ListViewHolder>() {
 
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: dcWayang)
+    }
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
     inner class ListViewHolder(var binding: ItemRecyclerBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -45,6 +55,10 @@ class adapterRecView(private val listWayang: ArrayList<dcWayang>) :
                 "Gambar ${wayang.nama} diklik",
                 Toast.LENGTH_SHORT
             ).show()
+
+            if (::onItemClickCallback.isInitialized) {
+                onItemClickCallback.onItemClicked(wayang)
+            }
         }
     }
 }
