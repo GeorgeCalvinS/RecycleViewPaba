@@ -1,5 +1,6 @@
 package com.example.recycleviewpaba
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,6 +56,20 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.rvWayang.layoutManager = LinearLayoutManager(this)
         }
-        binding.rvWayang.adapter = adapterRecView(_arWayang)
+
+        val adapterWayang = adapterRecView(_arWayang)
+        adapterWayang.setOnItemClickCallback(object : adapterRecView.OnItemClickCallback {
+            override fun onItemClicked(data: dcWayang) {
+                val intent = Intent(this@MainActivity, detWayang::class.java).apply {
+                    putExtra("nama", data.nama)
+                    putExtra("karakter", data.karakter)
+                    putExtra("deskripsi", data.deskripsi)
+                    putExtra("foto", data.foto)
+                }
+                startActivity(intent)
+            }
+        })
+
+        binding.rvWayang.adapter = adapterWayang
     }
 }
