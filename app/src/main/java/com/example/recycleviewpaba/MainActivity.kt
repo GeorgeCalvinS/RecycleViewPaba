@@ -3,6 +3,7 @@ package com.example.recycleviewpaba
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recycleviewpaba.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,10 @@ class MainActivity : AppCompatActivity() {
         siapkanData()
         tambahData()
         tampilkanData()
+
+        binding.btnToggleLayout.setOnCheckedChangeListener { _, _ ->
+            tampilkanData()
+        }
     }
 
     private fun siapkanData() {
@@ -45,7 +50,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun tampilkanData() {
-        binding.rvWayang.layoutManager = LinearLayoutManager(this)
+        if (binding.btnToggleLayout.isChecked) {
+            binding.rvWayang.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        } else {
+            binding.rvWayang.layoutManager = LinearLayoutManager(this)
+        }
         binding.rvWayang.adapter = adapterRecView(_arWayang)
     }
 }
