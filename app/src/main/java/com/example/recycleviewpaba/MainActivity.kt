@@ -2,7 +2,10 @@ package com.example.recycleviewpaba
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recycleviewpaba.databinding.ActivityMainBinding
@@ -68,8 +71,26 @@ class MainActivity : AppCompatActivity() {
                 }
                 startActivity(intent)
             }
+
+            override fun delData(pos: Int) {
+                val item = _arWayang[pos]
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("Konfirmasi HAPUS DATA")
+                    .setMessage("Apakah Benar Data ${item.nama} akan dihapus ? ")
+                    .setPositiveButton("Hapus") { _, _ ->
+                        _arWayang.removeAt(pos)
+                        adapterWayang.notifyItemRemoved(pos)
+                        adapterWayang.notifyItemRangeChanged(pos, _arWayang.size - pos)
+                        Toast.makeText(this@MainActivity, "${item.nama} berhasil dihapus", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton("Batal", null)
+                    .show()
+            }
         })
 
         binding.rvWayang.adapter = adapterWayang
+        binding.rvWayang.itemAnimator = DefaultItemAnimator().apply {
+            removeDuration = 400L
+        }
     }
 }
